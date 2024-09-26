@@ -22,7 +22,7 @@ app.get('/users', async (req, res) => {
         let users = [];
         
         if (req.query) {
-            users = await prisma.simpleUser.findMany({  // Alteração aqui
+            users = await prisma.simpleUser.findMany({
                 where: {
                     name: req.query.name,
                     email: req.query.email,
@@ -30,7 +30,7 @@ app.get('/users', async (req, res) => {
                 },
             });
         } else {
-            users = await prisma.simpleUser.findMany();  // Alteração aqui
+            users = await prisma.simpleUser.findMany();
         }
         
         res.status(200).json(users);
@@ -43,25 +43,25 @@ app.get('/users', async (req, res) => {
 // Rota para criar usuário
 app.post('/users', async (req, res) => {
     try {
-        const user = await prisma.simpleUser.create({  // Alteração aqui
+        const user = await prisma.simpleUser.create({
             data: {
                 email: req.body.email,
                 name: req.body.name,
                 age: req.body.age,
             },
         });
-
         res.status(201).json(user);
     } catch (error) {
-        console.error("Erro ao criar usuário:", error);
-        res.status(500).json({ message: "Erro ao criar usuário." });
+        console.error("Erro ao criar usuário:", error.message);
+        res.status(500).json({ message: "Erro ao criar usuário.", error: error.message });
     }
 });
+
 
 // Rota para atualizar usuário
 app.put('/users/:id', async (req, res) => {
     try {
-        const user = await prisma.simpleUser.update({  // Alteração aqui
+        const user = await prisma.simpleUser.update({
             where: {
                 id: parseInt(req.params.id),
             },
@@ -82,7 +82,7 @@ app.put('/users/:id', async (req, res) => {
 // Rota para deletar usuário
 app.delete('/users/:id', async (req, res) => {
     try {
-        await prisma.simpleUser.delete({  // Alteração aqui
+        await prisma.simpleUser.delete({
             where: {
                 id: parseInt(req.params.id),
             },
