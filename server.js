@@ -3,6 +3,10 @@ import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
+prisma.$connect()
+    .then(() => console.log("Conexão com o banco de dados estabelecida!"))
+    .catch((e) => console.error("Erro ao conectar ao banco de dados:", e));
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -12,12 +16,13 @@ app.listen(PORT, () => {
     console.log(`Rodando o express na porta ${PORT}`);
 });
 
+// Rota para buscar usuários
 app.get('/users', async (req, res) => {
     try {
         let users = [];
         
         if (req.query) {
-            users = await prisma.user.findMany({
+            users = await prisma.simpleUser.findMany({  // Alteração aqui
                 where: {
                     name: req.query.name,
                     email: req.query.email,
@@ -25,7 +30,7 @@ app.get('/users', async (req, res) => {
                 },
             });
         } else {
-            users = await prisma.user.findMany();
+            users = await prisma.simpleUser.findMany();  // Alteração aqui
         }
         
         res.status(200).json(users);
@@ -35,9 +40,10 @@ app.get('/users', async (req, res) => {
     }
 });
 
+// Rota para criar usuário
 app.post('/users', async (req, res) => {
     try {
-        const user = await prisma.user.create({
+        const user = await prisma.simpleUser.create({  // Alteração aqui
             data: {
                 email: req.body.email,
                 name: req.body.name,
@@ -52,9 +58,10 @@ app.post('/users', async (req, res) => {
     }
 });
 
+// Rota para atualizar usuário
 app.put('/users/:id', async (req, res) => {
     try {
-        const user = await prisma.user.update({
+        const user = await prisma.simpleUser.update({  // Alteração aqui
             where: {
                 id: parseInt(req.params.id),
             },
@@ -72,9 +79,10 @@ app.put('/users/:id', async (req, res) => {
     }
 });
 
+// Rota para deletar usuário
 app.delete('/users/:id', async (req, res) => {
     try {
-        await prisma.user.delete({
+        await prisma.simpleUser.delete({  // Alteração aqui
             where: {
                 id: parseInt(req.params.id),
             },
