@@ -7,35 +7,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model SimpleUser {
+model User {
   id    Int    @id @default(autoincrement())
   name  String
   email String @unique
   age   Int?
-}
-
-model UserWithPassword {
-  id       Int    @id @default(autoincrement())
-  name     String
-  email    String @unique
-  password String
-  cards    Card[] @relation("UserCards")
-}
-
-model Card {
-  id             Int            @id @default(autoincrement())
-  amount         Float
-  date           DateTime
-  installments   Int
-  userId         Int
-  description    String?
-  User           UserWithPassword @relation("UserCards", fields: [userId], references: [id])
-  Installments   Installments[]
-}
-
-model Installments {
-  id              Int     @id @default(autoincrement())
-  date            DateTime
-  cardId          Int
-  card            Card    @relation(fields: [cardId], references: [id])
 }
