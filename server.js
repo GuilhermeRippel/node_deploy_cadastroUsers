@@ -16,15 +16,13 @@ app.listen(PORT, () => {
     console.log(`Rodando o express na porta ${PORT}`);
 });
 
-console.log("Prisma client:", prisma);
-
 // Rota para buscar usuários
 app.get('/users', async (req, res) => {
     try {
-        console.log("Prisma client antes de criar usuário:", prisma);
+        console.log("Requisição recebida:", req.body);
         let users = [];
         if (req.query) {
-            users = await prisma.SimpleUser.findMany({
+            users = await prisma.simpleUser.findMany({
                 where: {
                     name: req.query.name,
                     email: req.query.email,
