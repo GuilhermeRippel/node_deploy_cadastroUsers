@@ -42,26 +42,29 @@ app.get('/users', async (req, res) => {
 
 // Rota para criar usuário
 app.post('/users', async (req, res) => {
-    const {email, name, age} = req.body
+    const { email, name, age } = req.body;
+    console.log("Dados recebidos:", req.body);
+    console.log(email, name, age);
+
     if (!email || !name) {
         return res.status(400).json({ message: "Email e nome são obrigatórios." });
     }
-    
 
     try {
         const user = await prisma.user.create({
             data: {
-                email: req.body.email,
-                name: req.body.name,
-                age: req.body.age,
+                email: email,
+                name: name,
+                age: age,
             },
         });
         res.status(201).json(user);
     } catch (error) {
-        console.error("Erro ao criar usuário:", error.message);
+        console.error("Erro ao criar usuário:", error);
         res.status(500).json({ message: "Erro ao criar usuário.", error: error.message });
     }
 });
+
 
 
 // Rota para atualizar usuário
