@@ -42,6 +42,9 @@ app.get('/users', async (req, res) => {
 
 // Rota para criar usuário
 app.post('/users', async (req, res) => {
+    const {email, name, age} = req.body
+    console.log(email, name, age)
+
     try {
         const user = await prisma.user.create({
             data: {
