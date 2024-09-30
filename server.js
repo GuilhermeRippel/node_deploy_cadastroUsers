@@ -43,7 +43,10 @@ app.get('/users', async (req, res) => {
 // Rota para criar usuário
 app.post('/users', async (req, res) => {
     const {email, name, age} = req.body
-    console.log(email, name, age)
+    if (!email || !name) {
+        return res.status(400).json({ message: "Email e nome são obrigatórios." });
+    }
+    
 
     try {
         const user = await prisma.user.create({
