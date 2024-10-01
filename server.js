@@ -22,7 +22,7 @@ app.get('/users', async (req, res) => {
         console.log("Requisição recebida:", req.body);
         let users = [];
         if (req.query) {
-            users = await prisma.user.findMany({
+            users = await prisma.simpleUser.findMany({
                 where: {
                     name: req.query.name,
                     email: req.query.email,
@@ -30,7 +30,7 @@ app.get('/users', async (req, res) => {
                 },
             });
         } else {
-            users = await prisma.user.findMany();
+            users = await prisma.simpleUser.findMany();
         }
         
         res.status(200).json(users);
@@ -51,7 +51,7 @@ app.post('/users', async (req, res) => {
     }
 
     try {
-        const user = await prisma.user.create({
+        const user = await prisma.simpleUser.create({
             data: {
                 email: email,
                 name: name,
@@ -70,7 +70,7 @@ app.post('/users', async (req, res) => {
 // Rota para atualizar usuário
 app.put('/users/:id', async (req, res) => {
     try {
-        const user = await prisma.user.update({
+        const user = await prisma.simpleUser.update({
             where: {
                 id: parseInt(req.params.id),
             },
@@ -91,7 +91,7 @@ app.put('/users/:id', async (req, res) => {
 // Rota para deletar usuário
 app.delete('/users/:id', async (req, res) => {
     try {
-        await prisma.user.delete({
+        await prisma.simpleUser.delete({
             where: {
                 id: parseInt(req.params.id),
             },
